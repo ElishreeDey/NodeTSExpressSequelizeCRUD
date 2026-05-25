@@ -1,3 +1,12 @@
+/*
+ ****************************************************************************************************************************
+ * Filename    : db.ts
+ * Description : This file is for setting up and managing the database connection.
+ * Author      : Elishree Dey Chand
+ * Created     : 2026-05-25
+ ****************************************************************************************************************************
+ */
+
 // Import Required Packages
 import { Sequelize } from 'sequelize' // Sequelize ORM package
 import dotenv from 'dotenv' // Loads .env variables
@@ -7,13 +16,8 @@ dotenv.config()
 // Create Sequelize Database Connection
 // Create Sequelize instance
 const sequelize = new Sequelize(
-  // Database name
   process.env.DB_NAME || '',
-
-  // Database username
   process.env.DB_USER || '',
-
-  // Database password
   process.env.DB_PASSWORD,
 
   {

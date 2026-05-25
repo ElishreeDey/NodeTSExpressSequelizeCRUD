@@ -1,3 +1,12 @@
+/*
+ ****************************************************************************************************************************
+ * Filename    : userModel
+ * Description : What table to use, What columns exist, What datatype each column has, Field validations if any.
+ * Author      : Elishree Dey Chand
+ * Created     : 2026-05-25
+ ****************************************************************************************************************************
+ */
+
 // Import Required Sequelize Modules
 import { DataTypes, Model } from 'sequelize'
 
@@ -7,9 +16,7 @@ import sequelize from '../config/db'
 // TypeScript interface for User fields
 import { UserAttributes } from '../types/userTypes'
 
-/* Create User Model Class
-Model = Represents database table in Sequelize
-This class maps to PostgreSQL table: users*/
+/* Create User Model Class. This class maps to PostgreSQL table: users*/
 class User extends Model<UserAttributes> implements UserAttributes {
   // Table columns
   public id!: number

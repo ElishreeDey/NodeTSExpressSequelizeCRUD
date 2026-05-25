@@ -1,3 +1,12 @@
+/*
+ ****************************************************************************************************************************
+ * Filename    : userController
+ * Description : Handles DB queries
+ * Author      : Elishree Dey Chand
+ * Created     : 2026-05-25
+ ****************************************************************************************************************************
+ */
+
 // Import Express Types
 import { Request, Response } from 'express'
 
@@ -8,14 +17,6 @@ import User from '../models/userModel'
 // POST /api/users
 export const createUser = async (req: Request, res: Response) => {
   try {
-    // Read data from request body
-    // Example:
-    // {
-    //   "name":"aa",
-    //   "email":"aa@test.com",
-    //   "phone":"123-123-1234",
-    //   "gender":"Male"
-    // }
     const { name, email, phone, gender } = req.body
 
     const user = await User.create({

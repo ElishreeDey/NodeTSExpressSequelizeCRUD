@@ -13,8 +13,7 @@ import dotenv from 'dotenv' // Loads .env variables
 
 dotenv.config()
 
-// Create Sequelize Database Connection
-// Create Sequelize instance
+// Create Sequelize Database Connection and create a Sequelize instance
 const sequelize = new Sequelize(
   process.env.DB_NAME || '',
   process.env.DB_USER || '',

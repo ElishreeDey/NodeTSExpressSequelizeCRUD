@@ -1,25 +1,23 @@
 /*
  ****************************************************************************************************************************
  * Filename    : userController
- * Description : Handles DB queries
+ * Description : Handles User APIs
  * Author      : Elishree Dey Chand
  * Created     : 2026-05-25
  ****************************************************************************************************************************
  */
 
-// Import Express Types
 import { Request, Response } from 'express'
+import { UserRepository } from '../repositories/userRepository'
 
-// Import Sequelize User model
-import User from '../models/userModel'
+const userRepository = new UserRepository()
 
 // CREATE USER
-// POST /api/users
 export const createUser = async (req: Request, res: Response) => {
   try {
     const { name, email, phone, gender } = req.body
 
-    const user = await User.create({
+    const user = await userRepository.createUser({
       name,
       email,
       phone,
@@ -38,10 +36,10 @@ export const createUser = async (req: Request, res: Response) => {
   }
 }
 
-// GET ALL USERS
+// GET USERS
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.findAll()
+    const users = await userRepository.getUsers()
 
     res.status(200).json(users)
   } catch (error) {
@@ -54,10 +52,9 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 // GET USER BY ID
-// GET /api/users/:id
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await User.findByPk(Number(req.params.id))
+    const user = await userRepository.getUserById(Number(req.params.id))
 
     if (!user) {
       return res.status(404).json({
@@ -78,22 +75,18 @@ export const getUserById = async (req: Request, res: Response) => {
 // UPDATE USER
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    // Read updated data from request body
     const { name, email } = req.body
 
-    // Find user by Primary Key (ID)
-    const user = await User.findByPk(Number(req.params.id))
+    const user = await userRepository.updateUser(Number(req.params.id), {
+      name,
+      email,
+    })
 
     if (!user) {
       return res.status(404).json({
         message: 'User not found',
       })
     }
-
-    await user.update({
-      name,
-      email,
-    })
 
     res.status(200).json(user)
   } catch (error) {
@@ -105,20 +98,16 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 }
 
-// Delete user by ID
+// DELETE USER
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    // Find user using ID
-    const user = await User.findByPk(Number(req.params.id))
+    const deleted = await userRepository.deleteUser(Number(req.params.id))
 
-    // If record not found
-    if (!user) {
+    if (!deleted) {
       return res.status(404).json({
         message: 'User not found',
       })
     }
-
-    await user.destroy()
 
     res.status(200).json({
       message: 'User deleted successfully',

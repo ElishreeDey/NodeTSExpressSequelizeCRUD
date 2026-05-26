@@ -10,6 +10,8 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/userService'
 
+import { MESSAGES } from '../constants/messages'
+
 const userService = new UserService()
 
 // CREATE USER
@@ -22,7 +24,7 @@ export const createUser = async (req: Request, res: Response) => {
     console.log('CREATE USER ERROR:', error)
 
     res.status(500).json({
-      message: 'Failed to create user',
+      message: MESSAGES.USER_CREATE_FAILED_MSG,
       error: error.message,
       details: error.errors || null,
     })
@@ -39,7 +41,7 @@ export const getUsers = async (req: Request, res: Response) => {
     console.log(error)
 
     res.status(500).json({
-      message: 'Failed to fetch users',
+      message: MESSAGES.USER_FETCH_FAILED_MSG,
     })
   }
 }
@@ -51,7 +53,7 @@ export const getUserById = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(404).json({
-        message: 'User not found',
+        message: MESSAGES.USER_FETCH_SINGLE_FAILED_MSG,
       })
     }
 
@@ -72,7 +74,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(404).json({
-        message: 'User not found',
+        message: MESSAGES.USER_NOT_FOUND_MSG,
       })
     }
 
@@ -81,7 +83,7 @@ export const updateUser = async (req: Request, res: Response) => {
     console.log(error)
 
     res.status(500).json({
-      message: 'Failed to update user',
+      message: MESSAGES.USER_UPDATE_FAILED_MSG,
     })
   }
 }
@@ -93,18 +95,18 @@ export const deleteUser = async (req: Request, res: Response) => {
 
     if (!deleted) {
       return res.status(404).json({
-        message: 'User not found',
+        message: MESSAGES.USER_NOT_FOUND_MSG,
       })
     }
 
     res.status(200).json({
-      message: 'User deleted successfully',
+      message: MESSAGES.USER_DELETE_SUCCESS_MSG,
     })
   } catch (error) {
     console.log(error)
 
     res.status(500).json({
-      message: 'Failed to delete user',
+      message: MESSAGES.USER_DELETE_FAILED_MSG,
     })
   }
 }

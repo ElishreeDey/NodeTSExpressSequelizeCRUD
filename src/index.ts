@@ -16,6 +16,7 @@ import helmet from 'helmet' // Adds security headers to protect Express app
 /* Import Project Files */
 import sequelize from './config/db' // Sequelize database connection setup
 import userRoutes from './routes/userRoutes' // User CRUD route
+import { errorMiddleware } from './middleware/errorMiddleware'
 
 // config .env values
 dotenv.config()
@@ -34,6 +35,9 @@ app.use(express.json())
 
 // Mount routes with /api prefix
 app.use('/api', userRoutes)
+
+// Error Middleware. errorMiddleware must be LAST app.use()
+app.use(errorMiddleware)
 
 // Read port from .env if not available use default 3000
 const PORT = process.env.PORT || 3000

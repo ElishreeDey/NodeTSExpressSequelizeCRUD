@@ -8,21 +8,14 @@
  */
 
 import { Request, Response } from 'express'
-import { UserRepository } from '../repositories/userRepository'
+import { UserService } from '../services/userService'
 
-const userRepository = new UserRepository()
+const userService = new UserService()
 
 // CREATE USER
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, phone, gender } = req.body
-
-    const user = await userRepository.createUser({
-      name,
-      email,
-      phone,
-      gender,
-    })
+    const user = await userService.createUser(req.body)
 
     res.status(201).json(user)
   } catch (error: any) {
@@ -39,7 +32,7 @@ export const createUser = async (req: Request, res: Response) => {
 // GET USERS
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await userRepository.getUsers()
+    const users = await userService.getUsers()
 
     res.status(200).json(users)
   } catch (error) {
@@ -54,7 +47,7 @@ export const getUsers = async (req: Request, res: Response) => {
 // GET USER BY ID
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await userRepository.getUserById(Number(req.params.id))
+    const user = await userService.getUserById(Number(req.params.id))
 
     if (!user) {
       return res.status(404).json({
@@ -75,12 +68,7 @@ export const getUserById = async (req: Request, res: Response) => {
 // UPDATE USER
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { name, email } = req.body
-
-    const user = await userRepository.updateUser(Number(req.params.id), {
-      name,
-      email,
-    })
+    const user = await userService.updateUser(Number(req.params.id), req.body)
 
     if (!user) {
       return res.status(404).json({
@@ -101,7 +89,7 @@ export const updateUser = async (req: Request, res: Response) => {
 // DELETE USER
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const deleted = await userRepository.deleteUser(Number(req.params.id))
+    const deleted = await userService.deleteUser(Number(req.params.id))
 
     if (!deleted) {
       return res.status(404).json({

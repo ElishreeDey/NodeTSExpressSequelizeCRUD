@@ -9,11 +9,13 @@
 
 import { UserRepository } from '../repositories/userRepository'
 
+import { UserAttributes } from '../types/userTypes'
+
 const userRepository = new UserRepository()
 
 export class UserService {
   // CREATE USER
-  async createUser(data: any) {
+  async createUser(data: UserAttributes) {
     return await userRepository.createUser(data)
   }
 
@@ -28,7 +30,7 @@ export class UserService {
   }
 
   // UPDATE USER
-  async updateUser(id: number, data: any) {
+  async updateUser(id: number, data: UserAttributes) {
     return await userRepository.updateUser(id, data)
   }
 

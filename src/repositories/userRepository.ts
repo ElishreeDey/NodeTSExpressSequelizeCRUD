@@ -9,9 +9,11 @@
 
 import User from '../models/userModel'
 
+import { UserAttributes } from '../types/userTypes'
+
 export class UserRepository {
   // CREATE USER
-  async createUser(data: any) {
+  async createUser(data: UserAttributes) {
     return await User.create(data)
   }
 
@@ -26,7 +28,7 @@ export class UserRepository {
   }
 
   // UPDATE USER
-  async updateUser(id: number, data: any) {
+  async updateUser(id: number, data: UserAttributes) {
     const user = await User.findByPk(id)
 
     if (!user) {

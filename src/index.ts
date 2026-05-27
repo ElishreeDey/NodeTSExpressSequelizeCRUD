@@ -18,6 +18,8 @@ import sequelize from './config/db' // Sequelize database connection setup
 import userRoutes from './routes/userRoutes' // User CRUD route
 import { errorMiddleware } from './middleware/errorMiddleware'
 
+import { MESSAGES } from './constants/messages'
+
 // config .env values
 dotenv.config()
 
@@ -46,11 +48,11 @@ const PORT = process.env.PORT || 3000
 sequelize
   .sync()
   .then(() => {
-    console.log('Database connected successfully')
+    console.log(MESSAGES.DB_CON_SUCCESS_MSG)
 
     // Start Express server after DB connection
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`)
+      console.log(`${MESSAGES.SERVER_RUNNING_ONPORT_MSG} ${PORT}`)
     })
   })
   .catch((error) => {

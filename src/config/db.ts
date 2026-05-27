@@ -7,39 +7,40 @@
  ****************************************************************************************************************************
  */
 
-// Import Required Packages
-import { Sequelize } from 'sequelize' // Sequelize ORM package
-import dotenv from 'dotenv' // Loads .env variables
+import { Sequelize } from 'sequelize'
+import dotenv from 'dotenv'
+
+import { MESSAGES } from '../constants/messages'
 
 dotenv.config()
 
-// Create Sequelize Database Connection and create a Sequelize instance
-const sequelize = new Sequelize(
-  process.env.DB_NAME || '',
-  process.env.DB_USER || '',
-  process.env.DB_PASSWORD,
+// Read Environment Variables
+const DB_HOST = process.env.DB_HOST
+const DB_PORT = process.env.DB_PORT
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_NAME
 
-  {
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-    port: Number(process.env.DB_PORT),
-    logging: false,
-  }
-)
-
-// Environment Variable Validation
-if (
-  !process.env.DB_HOST ||
-  !process.env.DB_PORT ||
-  !process.env.DB_USER ||
-  !process.env.DB_PASSWORD ||
-  !process.env.DB_NAME
-) {
-  throw new Error(
-    'Missing required database environment variables. ' +
-      'Please set DB_HOST, DB_PORT, DB_USER, DB_PASSWORD and DB_NAME in your .env file.'
-  )
+// Validate Environment Variables
+if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
+  throw new Error(MESSAGES.MISSING_EVN_VARIABLE_MSG)
 }
 
-//Export Sequelize Instance
+// Create Sequelize Instance
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+  host: DB_HOST,
+  dialect: 'postgres',
+  port: Number(DB_PORT),
+  logging: false,
+
+  // Connection Pool
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+})
+
+// Export Sequelize Instance
 export default sequelize

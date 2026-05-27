@@ -1,5 +1,7 @@
 /* Import Express */
 import express from 'express'
+import { authMiddleware } from '../middleware/authMiddleware'
+import { login } from '../controllers/authController'
 
 import {
   createUser, // Create new user
@@ -12,19 +14,22 @@ import {
 /* Create Express Router it helps separate routes from main app file*/
 const router = express.Router()
 
-/* Create a new user */
-router.post('/users', createUser)
+/* Login Route - Generate JWT Token */
+router.post('/login', login)
 
-/* Fetch all users using ID */
-router.get('/users', getUsers)
+/* Create a new user */
+router.post('/users', authMiddleware, createUser)
+
+/* Fetch all users */
+router.get('/users', authMiddleware, getUsers)
 
 // Fetch single user using ID
-router.get('/users/:id', getUserById)
+router.get('/users/:id', authMiddleware, getUserById)
 
 //Update single user using ID
-router.put('/users/:id', updateUser)
+router.put('/users/:id', authMiddleware, updateUser)
 
 //Delete single user using ID
-router.delete('/users/:id', deleteUser)
+router.delete('/users/:id', authMiddleware, deleteUser)
 
 export default router

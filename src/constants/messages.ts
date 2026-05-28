@@ -25,4 +25,5 @@ export const MESSAGES = {
     'Missing required database environment variables. Please set DB_HOST, DB_PORT, DB_USER, DB_PASSWORD and DB_NAME in your .env file.',
   DB_CON_SUCCESS_MSG: 'Database connected successfully',
   SERVER_RUNNING_ONPORT_MSG: 'Server running on port',
+  RATE_LIMIT_EXCEED_MSG: 'Too many requests. Please try again later.',
 }

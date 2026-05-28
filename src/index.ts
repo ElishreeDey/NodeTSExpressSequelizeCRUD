@@ -9,14 +9,15 @@
 
 /* Import Required Packages */
 import express from 'express' // Express framework used to create backend server and APIs
-import cors from 'cors' // Allows frontend apps to access backend APIs
 import dotenv from 'dotenv' // Reads environment variables from .env file
 import helmet from 'helmet' // Adds security headers to protect Express app
+import cors from 'cors' // Allows frontend apps to access backend APIs
 
 /* Import Project Files */
 import sequelize from './config/db' // Sequelize database connection setup
 import userRoutes from './routes/userRoutes' // User CRUD route
 import { errorMiddleware } from './middleware/errorMiddleware'
+import { apiRateLimiter } from './middleware/rateLimitMiddleware'
 
 import { MESSAGES } from './constants/messages'
 
@@ -30,10 +31,27 @@ const app = express()
 app.use(helmet())
 
 // CORS Middleware
-app.use(cors())
+//app.use(cors()) //Allow ALL origins
+
+// CORS Middleware
+app.use(
+  cors({
+    // Allowed Frontend URL to access the backend.
+    origin: process.env.CLIENT_URL,
+
+    // Allowed HTTP Methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+
+    // Allow Credentials
+    credentials: true,
+  })
+)
 
 // Converts incoming JSON request body into JS object. Required for POST and PUT APIs
 app.use(express.json())
+
+// Rate Limiter Middleware should be added immediately after JSON parser and before routes so abusive requests are blocked early.
+app.use(apiRateLimiter)
 
 // Mount routes with /api prefix
 app.use('/api', userRoutes)

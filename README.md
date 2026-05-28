@@ -6,15 +6,16 @@ This project follows a Controller → Service → Repository architecture to kee
 
 # Project Purpose
 
-- REST API development
-- Express + TypeScript backend setup
-- PostgreSQL integration
-- Sequelize ORM
+- Controller → Service → Repository Architecture
+- Sequelize ORM + PostgreSQL
 - JWT Authentication
-- Middleware handling
-- Error handling
-- Clean folder structure
-- Scalable backend architecture
+- Auth Middleware
+- Global Error Middleware
+- Helmet Security
+- API Rate Limiting
+- Restricted CORS Policy
+- Clean Folder Structure
+- TypeScript Type Safety
 
 # Tech Stack
 
@@ -28,6 +29,7 @@ Backend Technologies:
 - JWT Authentication
 - Helmet
 - CORS
+- Express Rate Limit
 - Dotenv
 
 # Project Request Flow
@@ -79,6 +81,80 @@ Update:
 - DB_USER
 - DB_PASSWORD
 - DB_NAME
+
+# Security Middleware
+
+This project uses multiple middleware layers for API security.
+
+## Helmet
+
+Helmet adds secure HTTP headers to protect the Express application.
+
+Used for:
+
+- Security headers
+- Clickjacking protection
+- MIME type protection
+- Browser security hardening
+
+## JWT Authentication
+
+JWT is used to secure protected APIs.
+
+Flow:
+
+Login API  
+↓  
+Generate Token  
+↓  
+Pass Token in Authorization Header  
+↓  
+Protected API Access
+
+Header Format:
+Authorization: Bearer YOUR_TOKEN
+
+## Rate Limiter
+
+API Rate Limiting is implemented using **express-rate-limit**.
+
+Purpose:
+
+- Prevent API abuse
+- Reduce spam requests
+- Protect login and APIs from brute-force attacks
+
+Example:
+15 Minutes Window
+Max Requests = Configurable via .env
+If limit exceeded:
+{
+"message": "Too many requests. Please try again later."
+}
+
+Middleware: rateLimitMiddleware.ts
+
+## CORS Restriction
+
+CORS policy is configured to allow only approved frontend applications.
+
+Instead of allowing all origins the API allows requests only from CLIENT_URL
+
+Example:
+CLIENT_URL=http://localhost:5173
+
+Purpose:
+
+- Restrict unauthorized frontend access
+- Improve API security
+- Production-safe API communication
+
+Note:
+Postman testing is not affected by browser CORS rules.
+
+# Install Packages
+
+npm install
 
 ## Run Development Server
 
